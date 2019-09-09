@@ -6,22 +6,25 @@ import (
 
 func main() {
 	fmt.Println("DCP-27")
+	res := IsWellBalanced("((){[]}()[{((()))}])")
+	fmt.Println(res)
+}
+
+func IsWellBalanced(s string) bool {
 
 	pba := [][2]int{} // holds parenthesis pairs
 	cba := [][2]int{} // holds curly brace pairs
 	sba := [][2]int{} // holds square bracket pairs
 
-	tStr := "((){[]}()[{((()))}])"
-
-	for x := 0; x < len(tStr); x++ {
+	for x := 0; x < len(s); x++ {
 		tmp := 0
-		if tStr[x] == '(' {
+		if s[x] == '(' {
 			a := x
 			tmp++
-			for y := x + 1; y < len(tStr); y++ {
-				if tStr[y] == '(' {
+			for y := x + 1; y < len(s); y++ {
+				if s[y] == '(' {
 					tmp++
-				} else if tStr[y] == ')' {
+				} else if s[y] == ')' {
 					tmp--
 					if tmp == 0 {
 						b := y
@@ -33,18 +36,19 @@ func main() {
 		}
 		if tmp != 0 {
 			fmt.Println("unbalanced ()")
+			return false
 		}
 	}
 
-	for x := 0; x < len(tStr); x++ {
+	for x := 0; x < len(s); x++ {
 		tmp := 0
-		if tStr[x] == '{' {
+		if s[x] == '{' {
 			a := x
 			tmp++
-			for y := x + 1; y < len(tStr); y++ {
-				if tStr[y] == '{' {
+			for y := x + 1; y < len(s); y++ {
+				if s[y] == '{' {
 					tmp++
-				} else if tStr[y] == '}' {
+				} else if s[y] == '}' {
 					tmp--
 					if tmp == 0 {
 						b := y
@@ -56,18 +60,19 @@ func main() {
 		}
 		if tmp != 0 {
 			fmt.Println("unbalanced {}")
+			return false
 		}
 	}
 
-	for x := 0; x < len(tStr); x++ {
+	for x := 0; x < len(s); x++ {
 		tmp := 0
-		if tStr[x] == '[' {
+		if s[x] == '[' {
 			a := x
 			tmp++
-			for y := x + 1; y < len(tStr); y++ {
-				if tStr[y] == '[' {
+			for y := x + 1; y < len(s); y++ {
+				if s[y] == '[' {
 					tmp++
-				} else if tStr[y] == ']' {
+				} else if s[y] == ']' {
 					tmp--
 					if tmp == 0 {
 						b := y
@@ -79,6 +84,7 @@ func main() {
 		}
 		if tmp != 0 {
 			fmt.Println("unbalanced []")
+			return false
 		}
 	}
 
@@ -89,28 +95,42 @@ func main() {
 	for i := 0; i < len(pba); i++ {
 		for j := i + 1; j < len(pba); j++ {
 			fmt.Printf("Comparing pba%v to pba%v\n", pba[i], pba[j])
+			if !CompareIntPairs(pba[i], pba[j]) {
+				return false
+			}
 		}
 		for k := 0; k < len(cba); k++ {
 			fmt.Printf("Comparing pba%v to cba%v\n", pba[i], cba[k])
+			if !CompareIntPairs(pba[i], cba[k]) {
+				return false
+			}
 		}
 		for l := 0; l < len(sba); l++ {
 			fmt.Printf("Comparing pba%v to sba%v\n", pba[i], sba[l])
+			if !CompareIntPairs(pba[i], sba[l]) {
+				return false
+			}
 		}
 	}
+	return true
 }
 
 // Int pairs can reside outside eachother or inside each other
 // ie [1,2] [5,6] is okay because those pairs are completely
-
-/*func compareIntPairs(pair1 [2]int, pair2 [2]int ) bool {
-
-	if pair1[0] < pair2[0] && pair[1] < pair1[1] {
-		return true
+func CompareIntPairs(pa [2]int, pb [2]int) bool {
+	if isBetween(pa[0], pb[0], pb[1]) {
+		if isBetween(pa[1], pb[0], pb[1]) {
+			return true
+		}
+		return false
 	}
 
-	if pair1[0] > pair2[1]
+	return true
+}
 
-
-
-
-}*/
+func isBetween(i int, x int, y int) bool {
+	if i > x && i < y {
+		return true
+	}
+	return false
+}
