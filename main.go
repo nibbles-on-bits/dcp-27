@@ -6,10 +6,11 @@ import (
 
 func main() {
 	fmt.Println("DCP-27")
-	res := IsWellBalanced("((){[]}()[{((()))}])")
-	fmt.Println(res)
+	fmt.Println("Check out the unit tests!")
 }
 
+// IsWellBalanced will take a string containing (), [], {} brace pairs
+//  and determine if it's well balanced or not.
 func IsWellBalanced(s string) bool {
 
 	pba := [][2]int{} // holds parenthesis pairs
@@ -116,7 +117,10 @@ func IsWellBalanced(s string) bool {
 }
 
 // Int pairs can reside outside eachother or inside each other
-// ie [1,2] [5,6] is okay because those pairs are completely
+// ie
+//	[1,2] [5,6] 	true
+//	[1,3] [2,5]		false
+//	[5,18] [8,15]	true
 func CompareIntPairs(pa [2]int, pb [2]int) bool {
 	if isBetween(pa[0], pb[0], pb[1]) {
 		if isBetween(pa[1], pb[0], pb[1]) {

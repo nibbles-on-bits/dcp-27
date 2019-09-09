@@ -34,5 +34,22 @@ func TestCompareIntPairs(t *testing.T) {
 	if got != false {
 		t.Error(fmt.Sprintf("pa=%v pb=%v got=%v", pa, pb, got))
 	}
+}
+
+func TestIsWellBalanced(t *testing.T) {
+
+	shouldPass := []string{"()", "[]", "{}", "({})", "[[(({}))]]"}
+	for _, s := range shouldPass {
+		if IsWellBalanced(s) == false {
+			t.Error(fmt.Sprintf("Test failed %v should return true", s))
+		}
+	}
+
+	shouldFail := []string{")", "(", "[({})", "{()})", "[][({})", "{[[[(({}))]]"}
+	for _, s := range shouldFail {
+		if IsWellBalanced(s) == false {
+			t.Error(fmt.Sprintf("Test failed %v should return true", s))
+		}
+	}
 
 }
